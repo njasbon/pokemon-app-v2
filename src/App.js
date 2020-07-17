@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import PokeCard from './PokeCard.js';
 
 function App() {
-  return (
+const [pokemonList, setPokemonList] = useState([])
+  const showPokemon = () => {
+    fetch("https://pokeapi.co/api/v2/pokemon")
+      .then(response => response.json())
+      .then(data => setPokemonList(data.results))
+  }
+
+  window.onload = showPokemon 
+  
+  const pokemonCards = pokemonList.map((individualPokemon, i) => 
+    <PokeCard key={i} 
+    name={individualPokemon.name} 
+    url={individualPokemon.url}/>)
+  
+    
+    return(
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="catch-phrase"><h2>Gotta catch them all!</h2></div>
+      {pokemonCards}
     </div>
-  );
+  )
 }
 
 export default App;
